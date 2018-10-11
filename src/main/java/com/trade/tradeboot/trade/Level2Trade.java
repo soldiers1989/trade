@@ -28,10 +28,7 @@ import java.util.concurrent.TimeUnit;
 public class Level2Trade {
     // 币对
     private List<String> symbolss = new ArrayList<>(Arrays.asList("btc_usdt", "eth_usdt", "bch_usdt", "eos_usdt", "etc_usdt", "ltc_usdt"));
-//    private List<String> symbolss = new ArrayList<>(Arrays.asList(
-//            "btc_usdt"
-//    ));
-
+//    private List<String> symbolss = new ArrayList<>(Arrays.asList("btc_usdt", "eth_usdt"));
 
     private Map<String, Long> buy_time = new ConcurrentHashMap<String, Long>() {
         {
@@ -238,6 +235,7 @@ public class Level2Trade {
 
     @PostConstruct
     public void start() {
+        long startTime = System.currentTimeMillis();
 
         ExecutorService exec = Executors.newCachedThreadPool();
 
@@ -265,6 +263,14 @@ public class Level2Trade {
             System.out.println(total_price);
             System.out.println(buy_summary);
             System.out.println(sold_summary);
+            long endTime = System.currentTimeMillis();
+            long costTime = (endTime - startTime) / 3600000;
+            Map summary = new HashMap() {{
+                put("min_stochRsi", min_stochRsi);
+                put("total_price", total_price);
+                put("cost_time", costTime + "h");
+            }};
+            FileWrite.write("./summary.txt", summary.toString());
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -312,14 +318,14 @@ public class Level2Trade {
                 tt.add(Double.parseDouble(k.getVolume()));
                 tt.add(tmp);
                 tt1.add(tt);
-                System.out.println("tt:"+tt);
+                System.out.println("tt:" + tt);
             }
-            System.out.println("tt1:"+tt1);
+            System.out.println("tt1:" + tt1);
             data_tmp.add(tt1);
             System.out.println("==================数据库查询成功===================");
             //            data_tmp.add(l2.getLevel2(sym1.split("_")[0], sym1.split("_")[1], "2hour", start, end));
         }
-        System.out.println("data_tmp:"+data_tmp);
+        System.out.println("data_tmp:" + data_tmp);
 
         for (int xxx = 0; xxx < ((JSONArray) data_tmp.get(0)).size(); xxx++) {
 
@@ -700,5 +706,19 @@ public class Level2Trade {
 //
 //        }
 //    }
+
+    public static void main(String[] args) {
+        long startTime = 1539238990000L;
+        long endTime = System.currentTimeMillis();
+        double costTime = (double) (endTime - startTime) / 3600000;
+        double min_stochRsi = 15d;
+        double total_price = 100000d;
+        Map summary = new HashMap() {{
+            put("min_stochRsi", min_stochRsi);
+            put("total_price", total_price);
+            put("cost_time", costTime + "h");
+        }};
+        FileWrite.write("./summary.txt", summary.toString());
+    }
 
 }
