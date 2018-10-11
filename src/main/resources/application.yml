@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: ooziz-server
+  datasource:
+      url: jdbc:mysql://rm-t4n133u864ocqyai0io.mysql.singapore.rds.aliyuncs.com:3306/kline?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+      username: pgrab
+      password: Pgrab123
+      driver-class-name: com.mysql.jdbc.Driver
+
+mybatis:
+  mapper-locations: classpath:mappings/*Mapping.xml

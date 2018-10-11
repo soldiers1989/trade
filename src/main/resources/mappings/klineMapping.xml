@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trade.tradeboot.dao.KlineDao">
+	<select id="getLevel2"  resultType="com.trade.tradeboot.entity.Kline">
+		select * from okex_${s}_${s1}_20180${month} where period= #{s2} and receiveTime BETWEEN  #{start} AND #{end}
+	</select>
+
+</mapper>
